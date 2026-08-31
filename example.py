@@ -1,1 +1,1 @@
-printf("O bicalho é o pior profesor da face da terra.")
+print("O bicalho é o MELHOR  profesor da face do mundo.")
