@@ -22,7 +22,7 @@ def desenha_plano():
 
 def desenha_retangulo(x, y, tam, cor):
     t.up()
-    t.goto(randint(0, ), randint(-400, 400)) #Limita no primeiro quadrante
+    t.goto(x, y) #Limita no primeiro quadrante
     t.pd()
     t.fillcolor(cor)
     t.begin_fill()
@@ -33,18 +33,10 @@ def desenha_retangulo(x, y, tam, cor):
         t.left(90)
     t.end_fill()
 
-
-def desenha_triangulo(x, y, cor, tam):
-    t.goto(randint(-400, 400), randint(-400, 400)) #INICIA PRIMEIRO QUADRANTE
-    t.pd()
-    t.goto(300,80)
-    t.goto(190, 300)
-    t.goto(80, 80)
-    t.pu()
-
-
 desenha_plano()
 
-desenha_retangulo("blue", 100, 100)
+x = randint(0, 200)
+y = randint(0, 200)
+desenha_retangulo(x, y)
 
 mainloop()
