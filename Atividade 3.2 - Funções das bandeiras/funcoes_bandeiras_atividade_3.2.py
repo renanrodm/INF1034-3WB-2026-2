@@ -3,320 +3,100 @@ from time import sleep
 
 
 t = Turtle()
-t.speed(0)
 
+def reset():
+    t.pu()
+    t.goto(0,0)
+    t.pd()
 
-def estrela(tamanho):
+def desenha_estrela(x, y, larg, cor):
+    t.pu()
+    t.goto(x, y)
+    t.pd()
+    t.fillcolor(cor)
+    t.begin_fill()
     for i in range(5):
-        t.fd(tamanho)
+        t.fd(larg)
         t.right(144)
+    t.end_fill()
 
-
-def triangulo(tam):
+def desenha_triangulo_isosceles(x, y, larg, cor):
+    t.pu()
+    t.goto(x, y)
+    t.pd()
+    t.fillcolor(cor)
+    t.begin_fill()
     for i in range(3):
-        t.fd(tam)
+        t.fd(larg)
         t.left(120)
+    t.end_fill()
 
-
-def desenha_retangulo(cor="#FFFFFF", base=100, altura=200):
+def desenha_retangulo(x, y, larg, alt, cor):
+    t.pu()
+    t.goto(x, y)
     t.pd()
     t.fillcolor(cor)
     t.begin_fill()
     for i in range(2):
-        t.fd(base)
+        t.fd(larg)
         t.left(90)
-        t.fd(altura)
+        t.fd(alt)
         t.left(90)
     t.end_fill()
 
-
-def italia():
+def desenha_losango(x, y, larg, cor):
     t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#239E46", base=100, altura=200)
-    t.pu()
-    t.goto(100, 0)
-    desenha_retangulo("#FFFFFF", base=100, altura=200)
-    t.pu()
-    t.goto(200, 0)
-    desenha_retangulo("#BE0127", base=100, altura=200)
-    t.pu()
-    t.goto(0, 0)
-
-
-def franca():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#3C5AA3", base=100, altura=200)
-    t.pu()
-    t.goto(100, 0)
-    desenha_retangulo("#FFFFFF", base=100, altura=200)
-    t.pu()
-    t.goto(200, 0)
-    desenha_retangulo("#BE0127", base=100, altura=200)
-    t.pu()
-    t.goto(0, 0)
-
-
-def cuba():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#002C5F", base=300, altura=200)
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#FFFFFF", base=300, altura=50)
-    t.pu()
-    t.goto(0, 75)
-    desenha_retangulo("#FFFFFF", base=300, altura=50)
-    t.pu()
-    t.goto(0, 150)
-    desenha_retangulo("#FFFFFF", base=300, altura=50)
-    t.pu()
-    t.goto(0, 100)
-    t.fillcolor("#D62828")
+    t.goto(x, y)
+    t.pd()
+    t.fillcolor(cor)
     t.begin_fill()
-    triangulo(150)
-    t.end_fill()
-    t.pu()
-    t.goto(120, 90)
-    t.fillcolor("#FFFFFF")
-    t.begin_fill()
-    estrela(18)
-    t.end_fill()
-    t.pu()
-    t.goto(0, 0)
+
+    t.left(30)
+    t.fd(larg)
+
+    t.right(60)
+    t.fd(larg)
+
+    t.right(30)
+    t.fd(larg)
+
+    #TERMINAR LOSANGO!
 
 
-def siria():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#D21034", base=300, altura=66)
-    t.pu()
-    t.goto(0, 66)
-    desenha_retangulo("#FFFFFF", base=300, altura=66)
-    t.pu()
-    t.goto(0, 132)
-    desenha_retangulo("#000000", base=300, altura=66)
-    t.pu()
-    t.goto(115, 75)
-    t.fillcolor("#0B6E4F")
-    t.begin_fill()
-    triangulo(90)
-    t.end_fill()
-    t.pu()
-    t.goto(150, 90)
-    t.fillcolor("#FFFFFF")
-    t.begin_fill()
-    estrela(12)
-    t.end_fill()
-    t.pu()
-    t.goto(0, 0)
 
+# def desenha_italia():
+#     desenha_retangulo(0, 0, 100, 200, "#009246")
+#     desenha_retangulo(100, 0, 100, 200, "white")
+#     desenha_retangulo(200, 0, 100, 200, "#ce2b37")
 
-def tunisia():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#E70013", base=300, altura=200)
-    t.pu()
-    t.goto(90, 0)
-    desenha_retangulo("#FFFFFF", base=120, altura=200)
-    t.pu()
-    t.goto(145, 70)
-    t.fillcolor("#E70013")
-    t.begin_fill()
-    triangulo(60)
-    t.end_fill()
-    t.pu()
-    t.goto(0, 0)
+# def desenha_franca():
+#     desenha_retangulo(0, 0, 100, 200, "#3C5AA3")
+#     desenha_retangulo(100, 0, 100, 200, "white")
+#     desenha_retangulo(200, 0, 100, 200, "#BE0127")
 
+# def desenha_cuba():
+#     desenha_retangulo(x=0, y=0, larg=400, alt=60, cor="#002C5F")
+#     desenha_retangulo(x=0, y=60, larg=400, alt=60, cor="white")
+#     desenha_retangulo(x=0, y=120, larg=400, alt=60, cor="#002C5F")
+#     desenha_retangulo(x=0, y=180, larg=400, alt=60, cor="white")
+#     desenha_retangulo(x=0, y=240, larg=400, alt=60, cor="#002C5F")
+#     t.left(30) # direciona o ponteiro para desenhar o triangulo na ordem correta
+#     desenha_triangulo_isosceles(0, 0, 300, "#CC0D0D")
+#     t.right(30)
+#     estrela(30, 170, 100, "white")
+
+# def siria():
+#     desenha_retangulo(x=0, y=0, larg=300, alt=66, cor="black")
+#     desenha_retangulo(x=0, y=66, larg=300, alt=66, cor="white")
+#     desenha_retangulo(x=0, y=132, larg=300, alt=66, cor="#017A3D")
+#     desenha_estrela(x=70, y=105, larg=40, cor="#CE1126")
+#     desenha_estrela(x=120, y=105, larg=40, cor="#CE1126")
+#     desenha_estrela(x=170, y=105, larg=40, cor="#CE1126")
 
 def brasil():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#009B3A", base=300, altura=200)
-
-    t.pu()
-    t.goto(75, 25)
-    t.fillcolor("#FFDF00")
-    t.begin_fill()
-    t.pd()
-    t.goto(150, 100)
-    t.goto(225, 25)
-    t.goto(150, -50)
-    t.goto(75, 25)
-    t.end_fill()
-
-    t.pu()
-    t.goto(120, 35)
-    t.fillcolor("#002776")
-    t.begin_fill()
-    t.pd()
-    for i in range(36):
-        t.fd(4)
-        t.left(10)
-    t.end_fill()
-
-    t.pu()
-    t.goto(150, 55)
-    t.fillcolor("#FFFFFF")
-    t.begin_fill()
-    estrela(15)
-    t.end_fill()
-    t.pu()
-    t.goto(0, 0)
+    desenha_retangulo(x=0, y=0, larg=300, alt=200, cor="#009B3A")
 
 
-def togo():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#D21034", base=90, altura=200)
-
-    t.pu()
-    t.goto(90, 0)
-    desenha_retangulo("#006A4E", base=210, altura=50)
-    t.pu()
-    t.goto(90, 50)
-    desenha_retangulo("#FFCE00", base=210, altura=50)
-    t.pu()
-    t.goto(90, 100)
-    desenha_retangulo("#FFFFFF", base=210, altura=50)
-    t.pu()
-    t.goto(90, 150)
-    desenha_retangulo("#FFCE00", base=210, altura=25)
-    t.pu()
-    t.goto(90, 175)
-    desenha_retangulo("#006A4E", base=210, altura=25)
-
-    t.pu()
-    t.goto(35, 80)
-    t.fillcolor("#FFFFFF")
-    t.begin_fill()
-    estrela(18)
-    t.end_fill()
-    t.pu()
-    t.goto(0, 0)
-
-
-def panama():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#D21034", base=150, altura=100)
-    t.pu()
-    t.goto(150, 0)
-    desenha_retangulo("#FFFFFF", base=150, altura=100)
-    t.pu()
-    t.goto(0, 100)
-    desenha_retangulo("#FFFFFF", base=150, altura=100)
-    t.pu()
-    t.goto(150, 100)
-    desenha_retangulo("#D21034", base=150, altura=100)
-
-    t.pu()
-    t.goto(150, 100)
-    t.fillcolor("#002C5F")
-    t.begin_fill()
-    estrela(13)
-    t.end_fill()
-    t.pu()
-    t.goto(0, 0)
-
-
-def reino_unido():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#012169", base=300, altura=200)
-
-    t.pu()
-    t.goto(120, 0)
-    desenha_retangulo("#FFFFFF", base=60, altura=200)
-    t.pu()
-    t.goto(0, 70)
-    desenha_retangulo("#FFFFFF", base=300, altura=60)
-
-    t.pu()
-    t.goto(130, 0)
-    desenha_retangulo("#C8102E", base=40, altura=200)
-    t.pu()
-    t.goto(0, 80)
-    desenha_retangulo("#C8102E", base=300, altura=40)
-    t.pu()
-    t.goto(0, 0)
-
-
-def grecia():
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#0D5EAF", base=300, altura=200)
-
-    t.pu()
-    t.goto(0, 0)
-    desenha_retangulo("#FFFFFF", base=300, altura=20)
-    t.pu()
-    t.goto(0, 40)
-    desenha_retangulo("#FFFFFF", base=300, altura=20)
-    t.pu()
-    t.goto(0, 80)
-    desenha_retangulo("#FFFFFF", base=300, altura=20)
-    t.pu()
-    t.goto(0, 120)
-    desenha_retangulo("#FFFFFF", base=300, altura=20)
-    t.pu()
-    t.goto(0, 160)
-    desenha_retangulo("#FFFFFF", base=300, altura=20)
-
-    t.pu()
-    t.goto(120, 0)
-    desenha_retangulo("#FFFFFF", base=60, altura=200)
-    t.pu()
-    t.goto(0, 80)
-    desenha_retangulo("#FFFFFF", base=300, altura=40)
-    t.pu()
-    t.goto(0, 0)
-
-
-italia()
-sleep(2)
-t.clear()
-
-franca()
-sleep(2)
-t.clear()
-
-cuba()
-sleep(2)
-t.clear()
-
-siria()
-sleep(2)
-t.clear()
-
-tunisia()
-sleep(2)
-t.clear()
-
-brasil()
-sleep(2)
-t.clear()
-
-togo()
-sleep(2)
-t.clear()
-
-
-panama()
-sleep(2)
-t.clear()
-
-reino_unido()
-sleep(2)
-t.clear()
-
-grecia()
-sleep(2)
-t.clear()
-
-
-
-
+desenha_losango(0, 0, 100, "yellow")
 
 mainloop()
