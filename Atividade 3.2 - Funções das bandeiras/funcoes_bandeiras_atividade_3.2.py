@@ -62,7 +62,15 @@ def desenha_losango(x, y, larg, cor):
 
     t.end_fill()
 
-
+def desenha_circulo(x, y, raio, cor):
+    t.pu()
+    t.goto(x, y - raio)
+    t.setheading(0)
+    t.pd()
+    t.fillcolor(cor)
+    t.begin_fill()
+    t.circle(raio)
+    t.end_fill()
 
 
 # def desenha_italia():
@@ -94,10 +102,14 @@ def desenha_losango(x, y, larg, cor):
 #     desenha_estrela(x=120, y=105, larg=40, cor="#CE1126")
 #     desenha_estrela(x=170, y=105, larg=40, cor="#CE1126")
 
-def brasil():
-    desenha_retangulo(x=0, y=0, larg=300, alt=200, cor="#009B3A")
-    desenha_losango(20, 100, 150, "yellow")
+# def brasil():
+#     desenha_retangulo(x=0, y=0, larg=300, alt=200, cor="#009B3A")
+#     desenha_losango(20, 100, 150, "yellow")
+#     desenha_circulo(150, 100, 45, "#002776")
+#     t.pu()
+#     t.goto(0, 0)
+#     desenha_retangulo(x=105, y=95, larg=90, alt=7, cor="white")
 
-brasil()
+
 
 mainloop()
