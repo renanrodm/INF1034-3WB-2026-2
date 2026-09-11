@@ -4,11 +4,6 @@ from time import sleep
 
 t = Turtle()
 
-def reset():
-    t.pu()
-    t.goto(0,0)
-    t.pd()
-
 def desenha_estrela(x, y, larg, cor):
     t.pu()
     t.goto(x, y)
@@ -47,7 +42,9 @@ def desenha_retangulo(x, y, larg, alt, cor):
 def desenha_losango(x, y, larg, cor):
     t.pu()
     t.goto(x, y)
+    t.setheading(0)
     t.pd()
+
     t.fillcolor(cor)
     t.begin_fill()
 
@@ -57,10 +54,14 @@ def desenha_losango(x, y, larg, cor):
     t.right(60)
     t.fd(larg)
 
-    t.right(30)
+    t.right(120)
     t.fd(larg)
 
-    #TERMINAR LOSANGO!
+    t.right(60)
+    t.fd(larg)
+
+    t.end_fill()
+
 
 
 
@@ -95,8 +96,8 @@ def desenha_losango(x, y, larg, cor):
 
 def brasil():
     desenha_retangulo(x=0, y=0, larg=300, alt=200, cor="#009B3A")
+    desenha_losango(20, 100, 150, "yellow")
 
-
-desenha_losango(0, 0, 100, "yellow")
+brasil()
 
 mainloop()
