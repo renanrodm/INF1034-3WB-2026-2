@@ -131,34 +131,46 @@ def reino_unido():
     desenha_retangulo(x=130, y=0, larg=40, alt=200, cor="red")
     desenha_retangulo(x=0, y=80, larg=300, alt=40, cor="red")
 
+def togo():
+    desenha_retangulo(x=0, y=0, larg=300, alt=200, cor="#006A4E")
+    desenha_retangulo(x=0, y=40, larg=300, alt=40, cor="#FFCE00")
+    desenha_retangulo(x=0, y=120, larg=300, alt=40, cor="#FFCE00")
+    desenha_retangulo(x=0, y=80, larg=120, alt=120, cor="#D21034")
+    desenha_estrela(x=20, y=150, larg=80, cor="white")
 
-italia()
-sleep(1)
-t.clear()
 
-franca()
-sleep(1)
-t.clear()
+# italia()
+# sleep(1)
+# t.clear()
 
-cuba()
-sleep(1)
-t.clear()
+# franca()
+# sleep(1)
+# t.clear()
 
-siria()
-sleep(1)
-t.clear()
+# cuba()
+# sleep(1)
+# t.clear()
 
-brasil()
-sleep(1)
-t.clear()
+# siria()
+# sleep(1)
+# t.clear()
 
-grecia()
-sleep(1)
-t.clear()
+# brasil()
+# sleep(1)
+# t.clear()
 
-reino_unido()
-sleep(1)
-t.clear()
+# grecia()
+# sleep(1)
+# t.clear()
 
+# reino_unido()
+# sleep(1)
+# t.clear()
+
+# togo()
+# sleep(1)
+# t.clear()
+
+togo()
 
 mainloop()
