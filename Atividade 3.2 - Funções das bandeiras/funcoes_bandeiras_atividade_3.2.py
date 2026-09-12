@@ -73,17 +73,17 @@ def desenha_circulo(x, y, raio, cor):
     t.end_fill()
 
 
-def desenha_italia():
+def italia():
     desenha_retangulo(0, 0, 100, 200, "#009246")
     desenha_retangulo(100, 0, 100, 200, "white")
     desenha_retangulo(200, 0, 100, 200, "#ce2b37")
 
-def desenha_franca():
+def franca():
     desenha_retangulo(0, 0, 100, 200, "#3C5AA3")
     desenha_retangulo(100, 0, 100, 200, "white")
     desenha_retangulo(200, 0, 100, 200, "#BE0127")
 
-def desenha_cuba():
+def cuba():
     desenha_retangulo(x=0, y=0, larg=400, alt=60, cor="#002C5F")
     desenha_retangulo(x=0, y=60, larg=400, alt=60, cor="white")
     desenha_retangulo(x=0, y=120, larg=400, alt=60, cor="#002C5F")
@@ -92,7 +92,7 @@ def desenha_cuba():
     t.left(30) # direciona o ponteiro para desenhar o triangulo na ordem correta
     desenha_triangulo_isosceles(0, 0, 300, "#CC0D0D")
     t.right(30)
-    estrela(30, 170, 100, "white")
+    desenha_estrela(30, 170, 100, "white")
 
 def siria():
     desenha_retangulo(x=0, y=0, larg=300, alt=66, cor="black")
@@ -132,10 +132,33 @@ def reino_unido():
     desenha_retangulo(x=0, y=80, larg=300, alt=40, cor="red")
 
 
+italia()
+sleep(1)
+t.clear()
 
-t.speed(0)
+franca()
+sleep(1)
+t.clear()
+
+cuba()
+sleep(1)
+t.clear()
+
+siria()
+sleep(1)
+t.clear()
+
+brasil()
+sleep(1)
+t.clear()
+
+grecia()
+sleep(1)
+t.clear()
 
 reino_unido()
+sleep(1)
+t.clear()
 
 
 mainloop()
