@@ -13,13 +13,14 @@
 # EXTRA (100XP)
 
 # Fazer uma função para rodar uma "corrida de tartarugas" para N tartarugas (a função só receberá o N como parâmetro).
+from math import sqrt
 from turtle import *
 from time import sleep
 
 
 t = Turtle()
 
-def desenha_plano_cartesiano(x, y):
+def desenha_plano_cartesiano(x=300, y=300):
     #Eixo x
     t.color("black")
     t.pu()
@@ -38,20 +39,33 @@ def desenha_plano_cartesiano(x, y):
     t.stamp()
     t.setheading(0)
 
-def eleva_ao_quadrado(x):
+def raiz_quadrada(x):
     t.color("red")
-    return x**2
+    return x**(1/2)
+
+def inversa(x):
+    return 1 / x 
+
+def exponencial(x):
+    return 2**x
+
 
 
 t.speed(0)
 
-desenha_plano_cartesiano(250, 250)
+desenha_plano_cartesiano()
 
 t.pu()
-t.goto(-20*10, eleva_ao_quadrado(-20))
+t.goto(0, raiz_quadrada(0))
 t.pd()
-for x in range(-20, 21):
-    t.goto(10*x, eleva_ao_quadrado(x))
+for x in range(0, 200):
+    t.goto(x, raiz_quadrada(x))
+    print(raiz_quadrada(x))
+
+sleep(1)
+t.clear()
+
+desenha_plano_cartesiano()
 
 
 mainloop()
