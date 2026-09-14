@@ -44,28 +44,33 @@ def raiz_quadrada(x):
     return x**(1/2)
 
 def inversa(x):
+    t.color("blue")
     return 1 / x 
 
 def exponencial(x):
     return 2**x
 
 
-
+ESCALA = 20
 t.speed(0)
 
 desenha_plano_cartesiano()
 
 t.pu()
-t.goto(0, raiz_quadrada(0))
+t.goto(0, raiz_quadrada(0)*ESCALA)
 t.pd()
-for x in range(0, 200):
-    t.goto(x, raiz_quadrada(x))
-    print(raiz_quadrada(x))
+for x in range(0, 150):
+    t.goto(x, raiz_quadrada(x)*ESCALA)
 
 sleep(1)
 t.clear()
 
 desenha_plano_cartesiano()
+t.pu()
+t.goto(12, inversa(12))
+t.pd()
+for x in range(12, 300):
+    t.goto(x * 3600, inversa(x) * 3600)
 
 
 mainloop()
