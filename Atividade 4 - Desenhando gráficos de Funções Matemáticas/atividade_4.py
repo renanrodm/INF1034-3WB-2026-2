@@ -48,31 +48,44 @@ def inversa(x):
     return 1 / x 
 
 def exponencial(x):
+    t.color("green")
     return 2**x
 
-
-ESCALA = 20
 t.speed(0)
 
+
+
+
+# desenha_plano_cartesiano()
+# ESCALA = 20
+# t.pu()
+# t.goto(0, raiz_quadrada(0)*ESCALA)
+# t.pd()
+# for x in range(0, 150):
+#     t.goto(x, raiz_quadrada(x)*ESCALA)
+
+# sleep(1)
+# t.clear()
+
+# desenha_plano_cartesiano()
+
+# t.pu()
+# t.goto(12, inversa(12) * 3000)
+# t.pd()
+
+# for x in range(12, 300):
+#   t.goto(x, inversa(x) * 3000)
+
+# sleep(1)
+# t.clear()
+
+
 desenha_plano_cartesiano()
 
 t.pu()
-t.goto(0, raiz_quadrada(0)*ESCALA)
+t.goto(-200, exponencial(-200))
 t.pd()
-for x in range(0, 150):
-    t.goto(x, raiz_quadrada(x)*ESCALA)
-
-sleep(1)
-t.clear()
-
-desenha_plano_cartesiano()
-
-t.pu()
-t.goto(12, inversa(12) * 3000)
-t.pd()
-
-for x in range(12, 300):
-  t.goto(x, inversa(x) * 3000)
-
+for x in range(-201, 200):
+    t.goto(x, exponencial(x))
 
 mainloop()
