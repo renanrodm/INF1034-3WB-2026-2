@@ -66,11 +66,13 @@ sleep(1)
 t.clear()
 
 desenha_plano_cartesiano()
+
 t.pu()
-t.goto(12, inversa(12))
+t.goto(12, inversa(12) * 3000)
 t.pd()
+
 for x in range(12, 300):
-    t.goto(x * 3600, inversa(x) * 3600)
+  t.goto(x, inversa(x) * 3000)
 
 
 mainloop()
