@@ -51,6 +51,18 @@ def exponencial(x):
     t.color("green")
     return 2**x
 
+def parabola_1(x):
+    t.color("orange")
+    return 5 - x**2
+
+def parabola_2(x):
+    t.color("purple")
+    return x**2 - 5*x + 6
+
+def cubica(x):
+    t.color("brown")
+    return x**3 - x**2 - x + 1
+
 t.speed(0)
 
 
@@ -82,10 +94,47 @@ t.clear()
 
 desenha_plano_cartesiano()
 
+### EXPONENCIAL
 t.pu()
-t.goto(-200, exponencial(-200))
+t.goto(-200, exponencial(-200 / 25))
 t.pd()
 for x in range(-201, 200):
-    t.goto(x, exponencial(x))
+    t.goto(x, exponencial(x / 25))
+
+sleep(1)
+t.clear()
+
+
+desenha_plano_cartesiano()
+
+t.pu()
+t.goto(-10, parabola_1(-10))
+t.pd()
+for x in range(-10, 11):
+    t.goto(x, parabola_1(x))
+
+sleep(1)
+t.clear()
+
+
+desenha_plano_cartesiano()
+
+t.pu()
+t.goto(-10, parabola_2(-10))
+t.pd()
+for x in range(-10, 11):
+    t.goto(x, parabola_2(x))
+
+sleep(1)
+t.clear()
+
+
+desenha_plano_cartesiano()
+
+t.pu()
+t.goto(-5, cubica(-5))
+t.pd()
+for x in range(-5, 6):
+    t.goto(x, cubica(x))
 
 mainloop()
