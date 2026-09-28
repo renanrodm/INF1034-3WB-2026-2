@@ -19,12 +19,14 @@ while True:
        
         for i in range(len(palavra_aleatoria)):
             if letra == palavra_aleatoria[i]:
-                palavra_aux += letra + ' '
-            else:
-                palavra_aux += palavra_oculta[2*i] + ' '
+                #TESTAR FATIAMENTO COM SLICING
+                palavra_aux = palavra_oculta[:i] + letra + palavra_oculta[i + 1:]
+                print(f"ESTADO ATUAL PALAVRA AUXILIAR: {palavra_aux}")
 
     palavra_oculta = palavra_aux
-    print(palavra_oculta)
+    print(palavra_aux)
+
+
     if palavra_oculta == palavra_aleatoria:
         break
 
