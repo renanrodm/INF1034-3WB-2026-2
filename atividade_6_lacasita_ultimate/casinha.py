@@ -21,7 +21,7 @@ lua_raio = 70
 nuvem_x = 420
 nuvem_x_inicial = nuvem_x
 nuvem_y = 150
-nuvem_vel = 300
+nuvem_vel = 60
 casa_x = 500
 casa_largura = 260
 casa_altura = 200
@@ -51,6 +51,33 @@ while running:
         nuvem_x = limite_esquerdo
         nuvem_vel = nuvem_vel * -1 ##para inverter o sentido da velocidade 
 
+
+    ##Comportamento lua teclado
+    keys = key.get_pressed()
+    if keys[K_d] or keys[K_RIGHT]:
+        lua_x = lua_x + 100 * dt
+    elif keys[K_a] or keys[K_LEFT]:
+        lua_x = lua_x - 100 * dt
+    elif keys[K_w] or keys[K_UP]:
+        lua_y = lua_y - 100 * dt
+    elif keys[K_s] or keys[K_DOWN]:
+        lua_y = lua_y + 100 * dt
+
+    ##Define limites da Lua
+    limite_esquerdo_lua = lua_raio
+    limite_direito_lua = 1280 - lua_raio
+    limite_superior_lua = lua_raio
+    limite_inferior_lua = 720 - lua_raio
+
+    if lua_x > limite_direito_lua:
+        lua_x = limite_direito_lua
+    elif lua_x < limite_esquerdo_lua:
+        lua_x = limite_esquerdo_lua
+
+    if lua_y > limite_inferior_lua:
+        lua_y = limite_inferior_lua
+    elif lua_y < limite_superior_lua:
+        lua_y = limite_superior_lua
 
     ### Desenho
     screen.fill(background_color)
