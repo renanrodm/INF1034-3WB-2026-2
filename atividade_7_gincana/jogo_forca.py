@@ -22,5 +22,6 @@ while palavra_oculta != palavra_aleatoria:
                 palavra_oculta = palavra_oculta[:i] + letra + palavra_oculta[i + 1:]
                 #AO AVALIADOR: Foi considerando usar o slicing de string do Python para solucionar.
                 #Dessa forma, eu crio uma nova string do jeito que quero sem precisar de string auxiliar.
+                #Não consegui avançar com a lógica explicada em aula.
         print(palavra_oculta)
 
