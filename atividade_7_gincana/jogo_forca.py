@@ -7,10 +7,10 @@ palavra_aleatoria = choice(palavras)
 
 print(palavra_aleatoria)
 
-palavra_oculta = "_ " * len(palavra_aleatoria)
+palavra_oculta = "_" * len(palavra_aleatoria)
 palavra_aux = ""
 
-while True:
+while palavra_oculta != palavra_aleatoria:
     
     letra = str(input("Digite uma letra: "))
     
@@ -18,15 +18,9 @@ while True:
     if letra in palavra_aleatoria:
        
         for i in range(len(palavra_aleatoria)):
-            if letra == palavra_aleatoria[i]:
-                #TESTAR FATIAMENTO COM SLICING
-                palavra_aux = palavra_oculta[:i] + letra + palavra_oculta[i + 1:]
-                print(f"ESTADO ATUAL PALAVRA AUXILIAR: {palavra_aux}")
-
-    palavra_oculta = palavra_aux
-    print(palavra_aux)
-
-
-    if palavra_oculta == palavra_aleatoria:
-        break
+            if palavra_aleatoria[i] == letra:
+                palavra_oculta = palavra_oculta[:i] + letra + palavra_oculta[i + 1:]
+                #AO AVALIADOR: Foi considerando usar o slicing de string do Python para solucionar.
+                #Dessa forma, eu crio uma nova string do jeito que quero sem precisar de string auxiliar.
+        print(palavra_oculta)
 
