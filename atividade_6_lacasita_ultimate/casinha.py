@@ -63,6 +63,11 @@ while running:
     elif keys[K_s] or keys[K_DOWN]:
         lua_y = lua_y + 100 * dt
 
+     ##Comportamento mouse lua
+    mouse_x, mouse_y = mouse.get_pos()
+    lua_x = mouse_x
+    lua_y = mouse_y
+
     ##Define limites da Lua
     limite_esquerdo_lua = lua_raio
     limite_direito_lua = 1280 - lua_raio
@@ -78,6 +83,9 @@ while running:
         lua_y = limite_inferior_lua
     elif lua_y < limite_superior_lua:
         lua_y = limite_superior_lua
+
+   
+
 
     ### Desenho
     screen.fill(background_color)
