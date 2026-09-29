@@ -10,14 +10,18 @@ clock = time.Clock()
 fonte = font.Font("font_stark.otf", 40)
 image = image.load("ironman.png")
 image = transform.scale(image, (150, 180))
-mixer.music.load("ironman.mp3")
-mixer.music.play(-1)
+# mixer.music.load("ironman.mp3")
+# mixer.music.play(-1)
+som_manha = mixer.Sound("manha.mp3")
+som_tarde = mixer.Sound("tarde.mp3")
+som_noite = mixer.Sound("noite.mp3")
 
 background_color = "#062632"
 texto = "Eu sou o Homem de Ferro"
-lua_x = 130
-lua_y = 130
-lua_raio = 70
+corpo_celeste_x = 130
+corpo_celeste_y = 130
+corpo_celeste_raio = 70
+corpo_celeste_cor = "#FFFFFF"
 nuvem_x = 420
 nuvem_x_inicial = nuvem_x
 nuvem_y = 150
@@ -37,6 +41,20 @@ while running:
     for ev in event.get():
         if ev.type == QUIT:
             running = False
+
+        if ev.type == MOUSEBUTTONUP:
+            mouse_x, mouse_y = ev.pos
+
+            if mouse_x < 426:
+                som_manha.play(maxtime=5000)
+
+            elif mouse_x < 853:
+                som_tarde.play(maxtime=5000)
+
+            else:
+                som_noite.play(maxtime=5000)
+
+        
     dt = clock.get_time() / 1000
     
     ##Comportamento nuvem
@@ -55,43 +73,141 @@ while running:
     ##Comportamento lua teclado
     keys = key.get_pressed()
     if keys[K_d] or keys[K_RIGHT]:
-        lua_x = lua_x + 100 * dt
+        corpo_celeste_x = corpo_celeste_x + 100 * dt
     elif keys[K_a] or keys[K_LEFT]:
-        lua_x = lua_x - 100 * dt
+        corpo_celeste_x = corpo_celeste_x - 100 * dt
     elif keys[K_w] or keys[K_UP]:
-        lua_y = lua_y - 100 * dt
+        corpo_celeste_y = corpo_celeste_y - 100 * dt
     elif keys[K_s] or keys[K_DOWN]:
-        lua_y = lua_y + 100 * dt
+        corpo_celeste_y = corpo_celeste_y + 100 * dt
 
      ##Comportamento mouse lua
     mouse_x, mouse_y = mouse.get_pos()
-    lua_x = mouse_x
-    lua_y = mouse_y
+    corpo_celeste_x = mouse_x
+    corpo_celeste_y = mouse_y
 
     ##Define limites da Lua
-    limite_esquerdo_lua = lua_raio
-    limite_direito_lua = 1280 - lua_raio
-    limite_superior_lua = lua_raio
-    limite_inferior_lua = 720 - lua_raio
+    limite_esquerdo_corpo_celeste = corpo_celeste_raio
+    limite_direito_corpo_celeste = 1280 - corpo_celeste_raio
+    limite_superior_corpo_celeste = corpo_celeste_raio
+    limite_inferior_corpo_celeste = 720 - corpo_celeste_raio
 
-    if lua_x > limite_direito_lua:
-        lua_x = limite_direito_lua
-    elif lua_x < limite_esquerdo_lua:
-        lua_x = limite_esquerdo_lua
+    if corpo_celeste_x > limite_direito_corpo_celeste:
+        corpo_celeste_x = limite_direito_corpo_celeste
+    elif corpo_celeste_x < limite_esquerdo_corpo_celeste:
+        corpo_celeste_x = limite_esquerdo_corpo_celeste
 
-    if lua_y > limite_inferior_lua:
-        lua_y = limite_inferior_lua
-    elif lua_y < limite_superior_lua:
-        lua_y = limite_superior_lua
+    if corpo_celeste_y > limite_inferior_corpo_celeste:
+        corpo_celeste_y = limite_inferior_corpo_celeste
+    elif corpo_celeste_y < limite_superior_corpo_celeste:
+        corpo_celeste_y = limite_superior_corpo_celeste
 
    
 
 
     ### Desenho
+
+
     screen.fill(background_color)
+
+    if corpo_celeste_x < 426:
+        # Fica de manhã e desenha sol com raios
+        background_color = "#F6C56B"
+        corpo_celeste_cor = "#FFD700"
+        desenhar_raios = True
+    elif corpo_celeste_x < 853:
+        # Fica de tarde e desenha sol com raios
+        background_color = "#5DADE2"
+        corpo_celeste_cor = "#FFD700"
+        desenhar_raios = True
+    else:
+        # Fica de noite e desenha lua sem raios
+        background_color = "#062632"
+        corpo_celeste_cor = "#FFFFFF"
+        desenhar_raios = False
+
+    if desenhar_raios:
+        cor_raios = "#FFD700"
+        largura_raios = 5
+
+        # Raios horizontais
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x - 105, corpo_celeste_y),
+            (corpo_celeste_x - 80, corpo_celeste_y),
+            largura_raios
+        )
+
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x + 80, corpo_celeste_y),
+            (corpo_celeste_x + 105, corpo_celeste_y),
+            largura_raios
+        )
+
+        # Raios verticais
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x, corpo_celeste_y - 105),
+            (corpo_celeste_x, corpo_celeste_y - 80),
+            largura_raios
+        )
+
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x, corpo_celeste_y + 80),
+            (corpo_celeste_x, corpo_celeste_y + 105),
+            largura_raios
+        )
+
+        # Raios diagonais
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x - 75, corpo_celeste_y - 75),
+            (corpo_celeste_x - 55, corpo_celeste_y - 55),
+            largura_raios
+        )
+
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x + 55, corpo_celeste_y - 55),
+            (corpo_celeste_x + 75, corpo_celeste_y - 75),
+            largura_raios
+        )
+
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x - 75, corpo_celeste_y + 75),
+            (corpo_celeste_x - 55, corpo_celeste_y + 55),
+            largura_raios
+        )
+
+        draw.line(
+            screen,
+            cor_raios,
+            (corpo_celeste_x + 55, corpo_celeste_y + 55),
+            (corpo_celeste_x + 75, corpo_celeste_y + 75),
+            largura_raios
+        )
+
+    draw.circle(
+        screen,
+        corpo_celeste_cor,
+        (corpo_celeste_x, corpo_celeste_y),
+        corpo_celeste_raio
+    )
+                
+
     draw.rect(screen, "#4CAF50", (0, 600, 1280, 120))
 
-    draw.circle(screen, "#FFFFFF", (lua_x, lua_y), lua_raio)
+    draw.circle(screen, corpo_celeste_cor, (corpo_celeste_x, corpo_celeste_y), corpo_celeste_raio)
 
     draw.circle(screen, "#FFFFFF", (nuvem_x, nuvem_y), 45)
     draw.circle(screen, "#FFFFFF", (nuvem_x + 55, nuvem_y - 15), 55)
