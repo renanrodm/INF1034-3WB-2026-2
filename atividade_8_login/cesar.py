@@ -17,3 +17,6 @@ def criptografa_cesar(senha):
             nova_senha += char
         
         return nova_senha
+
+
+#DICA PYGAME: SE TIVER COM EVENTO DE KEYDOWN, PEGA A LETRA DIGITADA E CONCATENA COM STRING
