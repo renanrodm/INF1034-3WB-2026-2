@@ -6,9 +6,9 @@ def criptografa_cesar(senha):
             #1 etapa: converto minha letra para o asci int e substraio de 'a' 
             # para pegar posicao no alfabeto.
             pos_char_original = ord(char) - ord('a')
-            #2 etapa: define a nova letra
+            #2 etapa: define a nova letra garantindo a circularidade
             pos_nova = ((pos_char_original + 3) % 26) + ord('a')
-            #3 etapa: converte
+            #3 etapa: converte para char e compoe a string
             nova_senha += chr(pos_nova)
         elif ('A' <= char <= 'Z'):
             pos_char_original = ord(char) - ord('A')
