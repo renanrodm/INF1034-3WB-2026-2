@@ -69,6 +69,7 @@ while True:
         for j in range(len(mapa_joguinho[i])):
             if mapa_joguinho[i][j] == "G":
                 screen.blit(tileset, (j*tile_size_joguinho, i*tile_size_joguinho), (0, 0, tile_size_joguinho, tile_size_joguinho))
+                #TODO: collider_grama = pygame.Rect(...)
             elif mapa_joguinho[i][j] == "B":
                 screen.blit(tileset, (j * tile_size_joguinho, i * tile_size_joguinho), (0, 128, tile_size_joguinho, tile_size_joguinho))
                 collider_caixa = pygame.Rect(j * tile_size_joguinho, i * tile_size_joguinho, 64, 64)
