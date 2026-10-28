@@ -73,3 +73,8 @@ turtle.colormode(255)
 # t.speed("slowest")
 t.speed(0)
 t.pu()
+
+
+
+
+turtle.mainloop()
