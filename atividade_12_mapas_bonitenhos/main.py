@@ -37,7 +37,7 @@ tiles_mapa = {
     "G": (0, 0, tile_size_joguinho, tile_size_joguinho),
     "B": (0, 128, tile_size_joguinho, tile_size_joguinho),
     "P": (128, 64, tile_size_joguinho, tile_size_joguinho),
-    "T": (64, 0, tile_size_joguinho, tile_size_joguinho)
+    "T": (64, 0, tile_size_joguinho, tile_size_joguinho),
 
 }
 
@@ -58,11 +58,6 @@ while True:
             sys.exit()
     clock.tick(60)
     delta_time = clock.get_time()
-
-    
-    
-
-
     keys = pygame.key.get_pressed()
 
 
@@ -86,12 +81,12 @@ while True:
     old_pos_y = pos_y
 
     if keys[pygame.K_SPACE] and no_chao:
-            vel_y = forca_pulo
+            vel_y = forca_pulo #valores negativos aqui sobem no eixo y (esquisito!!)
             no_chao = False
 
     ## Gravidade
     vel_y = vel_y + gravidade * delta_time #Acelerando a cada loop
-    pos_y += vel_y * delta_time #Atualizando a posicao
+    pos_y += vel_y * delta_time #posicao y sempre em relação a velocidade.
 
     collider_jogador = pygame.Rect(pos_x, pos_y, 64, 64)
     if collider_jogador.collidelist(colliders_mapa) != -1:
@@ -99,9 +94,12 @@ while True:
            vel_y = 0
            no_chao = True
 
+    # ==================================
+    #             DESENHOS
+    # ==================================
     screen.fill((152,209,250))
-    pygame.draw.rect(screen, (255, 0, 0), (pos_x, pos_y, 64, 64))
-    pygame.draw.rect(screen, (0, 0, 255), collider_jogador, 2)
+    pygame.draw.rect(screen, (255, 0, 0), (pos_x, pos_y, 64, 64)) #Personagem
+    pygame.draw.rect(screen, (0, 0, 255), collider_jogador, 2) # Visualização do collider
     
 
     for i in range(len(mapa_joguinho)):
