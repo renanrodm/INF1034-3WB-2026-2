@@ -8,6 +8,9 @@ clock = pygame.time.Clock()
 # tile_size = 60
 tile_size_joguinho = 64
 tileset = pygame.image.load("atividade_12_mapas_bonitenhos/tileset.png")
+bg = pygame.image.load("atividade_12_mapas_bonitenhos/bg.jpg")
+
+
 
 
 pos_x = 0
@@ -102,7 +105,7 @@ while True:
     # ==================================
     #             DESENHOS
     # ==================================
-    screen.fill((16,32,48))#fundo da tela
+    screen.blit(bg, (0, 0))
     pygame.draw.rect(screen, (255, 0, 0), (pos_x, pos_y, 64, 64)) #Personagem
     pygame.draw.rect(screen, (0, 0, 255), collider_jogador, 2) # Visualização do collider
     
