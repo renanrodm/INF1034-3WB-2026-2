@@ -18,7 +18,7 @@ andando = False
 
 
 
-pos_x = 0
+pos_x = 128
 pos_y = 0
 
 vel_y = 0
@@ -26,16 +26,16 @@ gravidade = 0.001
 no_chao = False
 
 mapa_joguinho = [
-  "XXXXXXXXXXXXXX",
-  "XXXXXXXXXXXXXX", 
-  "XXXXXXXXXXXXXX", 
-  "XXXXXXXXXXXXXX", 
-  "XXXXXXXXXXXXXX", 
-  "XXXXBXXXXXXXXX", 
-  "XXXXBBXXXXCCXX", 
-  "GGGGGGGAADDDDD", 
-  "TTTTTTTPPUUUUU", 
-  "TTTTTTTZZUUUUU",
+  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB",
+  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB", 
+  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB", 
+  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXCCXXXXXXXXXB", 
+  "BXXXXXXXXXXXXXXXXXXBBXXXXXXXXXXCCCCXXXXXXXXB", 
+  "BXXXXBXXXXXXXXXXXXBBBBXXXXXXXXCCCCCCXXXXXXXB", 
+  "BXXXXBBXXXXCCXXXXBBBBBBXXCCXXCCCCCCCCXXBBXXB", 
+  "BGGGGGGGAADDDDDDDGGGGGGGAADDDDDDDDDDDGGGGGBB", 
+  "BTTTTTTTPPUUUUUUUTTTTTTTPPUUUUUUUUUUUTTTTTTB", 
+  "BTTTTTTTZZUUUUUUUTTTTTTTZZUUUUUUUUUUUTTTTTTB",
 ]
 
 
@@ -134,7 +134,11 @@ while True:
            no_chao = True
 
 
-
+    # ==================================
+    #             CAMERA
+    # ==================================
+    camera_x = pos_x - 400
+    
     # ==================================
     #             DESENHOS
     # ==================================
@@ -148,7 +152,7 @@ while True:
     if olhando_esquerda:
         frame_atual = pygame.transform.flip(frame_atual, True, False)
 
-    screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player
+    screen.blit(frame_atual, (pos_x-camera_x, pos_y)) #Desenha o player
     
 
     for i in range(len(mapa_joguinho)): #Desenho do mapa
@@ -156,7 +160,7 @@ while True:
             letra = mapa_joguinho[i][j]
             if letra in tiles_mapa:
                 tile_coordenada = tiles_mapa[mapa_joguinho[i][j]]
-                screen.blit(tileset, (j*tile_size_joguinho, i*tile_size_joguinho), tile_coordenada)
+                screen.blit(tileset, (j*tile_size_joguinho-camera_x, i*tile_size_joguinho), tile_coordenada)
 
 
     pygame.display.update()
