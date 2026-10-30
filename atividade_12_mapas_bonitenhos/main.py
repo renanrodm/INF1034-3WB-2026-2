@@ -23,24 +23,26 @@ mapa_joguinho = [
   "XXXXXXXXXXXXXX", 
   "XXXXXXXXXXXXXX", 
   "XXXXXXXXXXXXXX", 
-  "XXXXXXXXXXXXXX", 
   "XXXXBXXXXXXXXX", 
+  "XXXXBBXXXXCCXX", 
   "GGGGGGGAAGGGGG", 
   "TTTTTTTPPTTTTT", 
-  "TTTTTTTZZTTTTT",
+  "UUUUUUUZZUUUUU",
 ]
 
 
 tiles_mapa = {
     #JUSTIFICATIVA TECNICA: MAPEIA A COORDENADA DE CADA TILE PARA EVITAR IFS NO SCREEN.BLIT()
-    "G": (0, 0, tile_size_joguinho, tile_size_joguinho),
+    "G": (0, 64, tile_size_joguinho, tile_size_joguinho),
+    "U": (64, 0, tile_size_joguinho, tile_size_joguinho),
     "T": (64, 64, tile_size_joguinho, tile_size_joguinho),
     "B": (0, 128, tile_size_joguinho, tile_size_joguinho),
+    "C": (64, 128, tile_size_joguinho, tile_size_joguinho),
     "P": (128, 0, tile_size_joguinho, tile_size_joguinho),
     "Z": (128, 64, tile_size_joguinho, tile_size_joguinho),
 }
 
-colisores = ["G", "B"] #Lista de blocos que colidem com o jogador.
+colisores = ["G","B", "C"] #Lista de blocos que colidem com o jogador.
 colliders_mapa = [] 
 #JUSTIFICATIVA TECNICA: A ideia é ter um array de blocos colisores para utilizar colliderlist. Dado uma lista de colisores, retorna o objeto rect que o jogador colidiu. Muito mais eficiente!!!
 for i in range(len(mapa_joguinho)):
