@@ -41,14 +41,20 @@ mapa_joguinho = [
 
 tiles_mapa = {
     #JUSTIFICATIVA TECNICA: MAPEIA A COORDENADA DE CADA TILE PARA EVITAR IFS NO SCREEN.BLIT()
-    "G": (0, 64, tile_size_joguinho, tile_size_joguinho),
-    "U": (64, 0, tile_size_joguinho, tile_size_joguinho),
-    "D": (0, 0, tile_size_joguinho, tile_size_joguinho),
-    "T": (64, 64, tile_size_joguinho, tile_size_joguinho),
-    "B": (0, 128, tile_size_joguinho, tile_size_joguinho),
-    "C": (64, 128, tile_size_joguinho, tile_size_joguinho),
-    "P": (128, 0, tile_size_joguinho, tile_size_joguinho),
-    "Z": (128, 64, tile_size_joguinho, tile_size_joguinho),
+    # -- LINHA 1 TILE SET ---
+    "D": (0, 0, tile_size_joguinho, tile_size_joguinho), #CHÃO ENFERRUJADO FAIXA ZEBRADA
+    "U": (64, 0, tile_size_joguinho, tile_size_joguinho),#CHÃO ENFERRUJADO
+    "P": (128, 0, tile_size_joguinho, tile_size_joguinho),#AGUA PARTE CIMA
+    
+    # -- LINHA 2 TILE SET ---
+    "G": (0, 64, tile_size_joguinho, tile_size_joguinho), #CAIXA DE METAL LED AZUL
+    "T": (64, 64, tile_size_joguinho, tile_size_joguinho), #CAIXA DE METAL
+    "Z": (128, 64, tile_size_joguinho, tile_size_joguinho), #AGUA PARTE BAIXO
+    
+    # -- LINHA 3 TILE SET ---
+    "B": (0, 128, tile_size_joguinho, tile_size_joguinho),  #CAIXA DE METAL
+    "C": (64, 128, tile_size_joguinho, tile_size_joguinho), #CAIXA DE METAL FAIXA ZEBRADA
+
 }
 
 colisores = ["G","B", "C", "D"] #Lista de blocos que colidem com o jogador.
