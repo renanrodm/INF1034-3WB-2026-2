@@ -14,7 +14,7 @@ player_spritesheet = pygame.image.load("atividade_13_g3/meppo32.png").convert_al
 player_anim_time = 0
 player_curr_frame = 0
 olhando_esquerda = False
-andando = False
+andando = True
 
 
 
@@ -26,18 +26,17 @@ gravidade = 0.001
 no_chao = False
 
 mapa_joguinho = [
-  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB",
-  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB", 
-  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXB", 
-  "BXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXCCXXXXXXXXXB", 
-  "BXXXXXXXXXXXXXXXXXXBBXXXXXXXXXXCCCCXXXXXXXXB", 
-  "BXXXXBXXXXXXXXXXXXBBBBXXXXXXXXCCCCCCXXXXXXXB", 
-  "BXXXXBBXXXXCCXXXXBBBBBBXXCCXXCCCCCCCCXXBBXXB", 
-  "BGGGGGGGAADDDDDDDGGGGGGGAADDDDDDDDDDDGGGGGBB", 
-  "BTTTTTTTPPUUUUUUUTTTTTTTPPUUUUUUUUUUUTTTTTTB", 
-  "BTTTTTTTZZUUUUUUUTTTTTTTZZUUUUUUUUUUUTTTTTTB",
+  "BXXXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXB",
+  "BXXXXXXBXXXXCXXXXBXXXXBXXXXXXXXXBXXXXBXXXXBXXXXCXXXXBXXXXXXXXXBXXXXCXXXXBXXXXBXXXXBXXXXB",
+  "BXXXXXXBXXXXXXXXXBXXXXCXXXXXXXXXBXXXXBXXXXCXXXXXXXXXBXXXXXXXXXBXXXXXXXXXBXXXXCXXXXBXXXXB",
+  "BXXXXXXCXXXXXXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXXXXXBXXXXCXXXXCXXXXXXXXXBXXXXXXXXXCXXXXB",
+  "BXXXXXXXXXXXCXXXXCXXXXXXXXXBXXXXXXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXCXXXXBXXXXXXXXXXXXXXB",
+  "BXXXXXXXXXXXBXXXXXXXXXCXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXBXXXXXXXXXBXXXXCXXXXCXXXXXXXXXB",
+  "BXXXXXXCXXXXBXXXXXXXXXBXXXXBXXXXCXXXXXXXXXBXXXXBXXXXXXXXXBXXXXCXXXXBXXXXXXXXXBXXXXCXXXXB",
+  "BXXXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXXXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXXXXXXBXXXXBXXXXB",
+  "BGGGGXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBGGGGB",
+  "BXXXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXB",
 ]
-
 
 tiles_mapa = {
     #JUSTIFICATIVA TECNICA: MAPEIA A COORDENADA DE CADA TILE PARA EVITAR IFS NO SCREEN.BLIT()
@@ -73,26 +72,24 @@ while True:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                vel_y = -0.35 #valores negativos aqui sobem no eixo y (esquisito!!)
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                vel_y = -0.35
+            
+
     clock.tick(60)
     delta_time = clock.get_time()
-    keys = pygame.key.get_pressed()
 
 
     # ==================================
     #       MOVIMENTAÇÃO EIXO X
     # ==================================
     old_pos_x = pos_x
-    
-    if keys[pygame.K_RIGHT]:
+    if andando:
         pos_x = pos_x + 0.2*delta_time
-        andando = True
-        olhando_esquerda = False
-    elif keys[pygame.K_LEFT]:
-        pos_x = pos_x - 0.2*delta_time
-        andando = True
-        olhando_esquerda = True
-    else:
-        andando = False
 
 
     collider_jogador = pygame.Rect(pos_x, pos_y, 64, 64)
@@ -104,10 +101,6 @@ while True:
     # ==================================
     old_pos_y = pos_y
 
-    if keys[pygame.K_SPACE] and no_chao:
-            vel_y = -0.60 #valores negativos aqui sobem no eixo y (esquisito!!)
-            no_chao = False
-            
     # ==================================
     #             GRAVIDADE
     # ==================================
@@ -129,7 +122,7 @@ while True:
     player_curr_frame = player_curr_frame % total_frames
 
     player_anim_time = player_anim_time + delta_time
-    if player_anim_time / 1000 > 0.12:
+    if player_anim_time / 1000 > 0.15:
         player_curr_frame = (player_curr_frame + 1) % total_frames
         player_anim_time = 0
 
@@ -139,6 +132,7 @@ while True:
            vel_y = 0
            no_chao = True
 
+# ====================================================================================================== #
 
     # ==================================
     #             CAMERA
