@@ -2,14 +2,14 @@ import pygame, sys
 from pygame.locals import QUIT
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((400, 600))
 pygame.display.set_caption('Hello World!')
 clock = pygame.time.Clock()
 # tile_size = 60
 tile_size_joguinho = 64
-tileset = pygame.image.load("atividade_13_g3/tileset.png")
-bg = pygame.image.load("atividade_13_g3/bg.jpg")
-player_spritesheet = pygame.image.load("atividade_13_g3/meppo32.png").convert_alpha()
+tileset = pygame.image.load("atividade_13_final_flappy_bird/tileset.png")
+bg = pygame.image.load("atividade_13_final_flappy_bird/bg.jpg")
+player_spritesheet = pygame.image.load("atividade_13_final_flappy_bird/meppo32.png").convert_alpha()
 # player_spritesheet = pygame.transform.scale(player_spritesheet, (512, 128))
 player_anim_time = 0
 player_curr_frame = 0
