@@ -2,7 +2,7 @@ import pygame, sys
 from pygame.locals import QUIT
 
 pygame.init()
-screen = pygame.display.set_mode((400, 600))
+screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('Hello World!')
 clock = pygame.time.Clock()
 # tile_size = 60
@@ -25,11 +25,14 @@ vel_y = 0
 gravidade = 0.001
 no_chao = False
 
+mapa_x = 0 
+vel_mapa = 0.2
+
 mapa_joguinho = [
   "BXXXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXB",
   "BXXXXXXBXXXXCXXXXBXXXXBXXXXXXXXXBXXXXBXXXXBXXXXCXXXXBXXXXXXXXXBXXXXCXXXXBXXXXBXXXXBXXXXB",
   "BXXXXXXBXXXXXXXXXBXXXXCXXXXXXXXXBXXXXBXXXXCXXXXXXXXXBXXXXXXXXXBXXXXXXXXXBXXXXCXXXXBXXXXB",
-  "BXXXXXXCXXXXXXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXXXXXBXXXXCXXXXCXXXXXXXXXBXXXXXXXXXCXXXXB",
+  "BXXXXXXCXXXXXXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXXXXXBXXXXCXXXXCXXXXXXXXXBXXXXXXXXXCXXXXXB",
   "BXXXXXXXXXXXCXXXXCXXXXXXXXXBXXXXXXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXCXXXXBXXXXXXXXXXXXXXB",
   "BXXXXXXXXXXXBXXXXXXXXXCXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXBXXXXXXXXXBXXXXCXXXXCXXXXXXXXXB",
   "BXXXXXXCXXXXBXXXXXXXXXBXXXXBXXXXCXXXXXXXXXBXXXXBXXXXXXXXXBXXXXCXXXXBXXXXXXXXXBXXXXCXXXXB",
@@ -59,13 +62,14 @@ tiles_mapa = {
 colisores = ["G","B", "C", "D"] #Lista de blocos que colidem com o jogador.
 colliders_mapa = [] 
 #JUSTIFICATIVA TECNICA: A ideia é ter um array de blocos colisores para utilizar colliderlist. Dado uma lista de colisores, retorna o objeto rect que o jogador colidiu. Muito mais eficiente!!!
+
 for i in range(len(mapa_joguinho)):
     for j in range(len(mapa_joguinho[i])):
         if mapa_joguinho[i][j] in colisores:
             collider_rect = pygame.Rect(j * tile_size_joguinho, i * tile_size_joguinho, 64, 64) #Cria o colisor
             if collider_rect not in colliders_mapa: #Evita colisor duplicado
                 colliders_mapa.append(collider_rect)
-print(colliders_mapa)
+    print(colliders_mapa)
 
 while True:
     for event in pygame.event.get():
@@ -92,8 +96,8 @@ while True:
         pos_x = pos_x + 0.2*delta_time
 
 
-    collider_jogador = pygame.Rect(pos_x, pos_y, 64, 64)
-    if collider_jogador.collidelist(colliders_mapa) != -1:
+    collider_jogador_x = pygame.Rect(pos_x, pos_y, 64, 64)
+    if collider_jogador_x.collidelist(colliders_mapa) != -1:
         pos_x = old_pos_x
 
     # ==================================
@@ -126,18 +130,20 @@ while True:
         player_curr_frame = (player_curr_frame + 1) % total_frames
         player_anim_time = 0
 
-    collider_jogador = pygame.Rect(pos_x, pos_y, 64, 64)
-    if collider_jogador.collidelist(colliders_mapa) != -1:
+    collider_jogador_y = pygame.Rect(pos_x, pos_y, 64, 64)
+    if collider_jogador_y.collidelist(colliders_mapa) != -1:
            pos_y = old_pos_y
            vel_y = 0
            no_chao = True
+    
+    
 
 # ====================================================================================================== #
 
     # ==================================
     #             CAMERA
     # ==================================
-    camera_x = pos_x - 400
+   
     
     # ==================================
     #             DESENHOS
@@ -152,15 +158,18 @@ while True:
     if olhando_esquerda:
         frame_atual = pygame.transform.flip(frame_atual, True, False)
 
-    screen.blit(frame_atual, (pos_x-camera_x, pos_y)) #Desenha o player
+    screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player
     
-
+    mapa_x = mapa_x - vel_mapa * delta_time
     for i in range(len(mapa_joguinho)): #Desenho do mapa
         for j in range(len(mapa_joguinho[i])):
             letra = mapa_joguinho[i][j]
             if letra in tiles_mapa:
                 tile_coordenada = tiles_mapa[mapa_joguinho[i][j]]
-                screen.blit(tileset, (j*tile_size_joguinho-camera_x, i*tile_size_joguinho), tile_coordenada)
+                screen.blit(tileset, (j*tile_size_joguinho + mapa_x, i*tile_size_joguinho), tile_coordenada)
+    pygame.draw.rect(screen, "red", collider_jogador_x, 2)
+    pygame.draw.rect(screen, "yellow", collider_jogador_y, 2)
 
+    
 
     pygame.display.update()
