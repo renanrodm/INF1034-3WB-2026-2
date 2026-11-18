@@ -3,27 +3,21 @@ from pygame.locals import QUIT
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption('Hello World!')
+pygame.display.set_caption('Flappy Bird')
 clock = pygame.time.Clock()
-# tile_size = 60
 tile_size_joguinho = 64
 tileset = pygame.image.load("atividade_13_final_flappy_bird/tileset.png")
 bg = pygame.image.load("atividade_13_final_flappy_bird/bg.jpg")
 player_spritesheet = pygame.image.load("atividade_13_final_flappy_bird/meppo32.png").convert_alpha()
-# player_spritesheet = pygame.transform.scale(player_spritesheet, (512, 128))
 player_anim_time = 0
 player_curr_frame = 0
-olhando_esquerda = False
-andando = True
 
 
 
 pos_x = 128
 pos_y = 0
-
 vel_y = 0
 gravidade = 0.001
-no_chao = False
 
 mapa_x = 0 
 vel_mapa = 0.2
@@ -92,22 +86,16 @@ while True:
     #       MOVIMENTAÇÃO EIXO X
     # ==================================
     old_pos_x = pos_x
-    if andando:
-        pos_x = pos_x + 0.2*delta_time
-
 
     collider_jogador_x = pygame.Rect(pos_x, pos_y, 64, 64)
     if collider_jogador_x.collidelist(colliders_mapa) != -1:
         pos_x = old_pos_x
 
     # ==================================
-    #       MOVIMENTAÇÃO EIXO Y
+    #       MOVIMENTAÇÃO EIXO Y + GRAVIDADE
     # ==================================
     old_pos_y = pos_y
 
-    # ==================================
-    #             GRAVIDADE
-    # ==================================
     vel_y = vel_y + gravidade * delta_time #Acelerando a cada loop (valores positivos descem no eixo y)
     pos_y += vel_y * delta_time #posicao y sempre em relação a velocidade.
 
@@ -115,13 +103,10 @@ while True:
     # ==================================
     #         ANIMAÇÃO PLAYER
     # ==================================
-    if andando:
         
-        total_frames = 8
-        linha_sprite = 1
-    else:
-        total_frames = 5
-        linha_sprite = 0
+    total_frames = 8
+    linha_sprite = 1
+
 
     player_curr_frame = player_curr_frame % total_frames
 
@@ -136,15 +121,7 @@ while True:
            vel_y = 0
            no_chao = True
     
-    
 
-# ====================================================================================================== #
-
-    # ==================================
-    #             CAMERA
-    # ==================================
-   
-    
     # ==================================
     #             DESENHOS
     # ==================================
@@ -155,12 +132,10 @@ while True:
     area_player = (player_curr_frame * 64, linha_sprite * 64, 64, 64)
     frame_atual = player_spritesheet.subsurface(area_player)
 
-    if olhando_esquerda:
-        frame_atual = pygame.transform.flip(frame_atual, True, False)
 
     screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player
     
-    mapa_x = mapa_x - vel_mapa * delta_time
+    mapa_x = mapa_x - vel_mapa * delta_time #mapa andando
     for i in range(len(mapa_joguinho)): #Desenho do mapa
         for j in range(len(mapa_joguinho[i])):
             letra = mapa_joguinho[i][j]
