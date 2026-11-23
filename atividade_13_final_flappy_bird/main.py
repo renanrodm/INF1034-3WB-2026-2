@@ -1,14 +1,16 @@
 import pygame, sys
 from pygame.locals import QUIT
+from pathlib import Path
+DIRETORIO_BASE = Path(__file__).parent
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('Flappy Bird')
 clock = pygame.time.Clock()
 tile_size_joguinho = 64
-tileset = pygame.image.load("atividade_13_final_flappy_bird/tileset.png")
-bg = pygame.image.load("atividade_13_final_flappy_bird/bg.jpg")
-player_spritesheet = pygame.image.load("atividade_13_final_flappy_bird/meppo32.png").convert_alpha()
+tileset = pygame.image.load(DIRETORIO_BASE / "tileset.png")
+bg = pygame.image.load(DIRETORIO_BASE / "bg.jpg")
+player_spritesheet = pygame.image.load(DIRETORIO_BASE / "meppo32.png").convert_alpha()
 player_anim_time = 0
 player_curr_frame = 0
 
