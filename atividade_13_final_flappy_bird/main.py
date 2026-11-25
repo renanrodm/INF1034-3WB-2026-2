@@ -4,12 +4,22 @@ from pathlib import Path
 DIRETORIO_BASE = Path(__file__).parent
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+
+
+bg = pygame.image.load(DIRETORIO_BASE / "assets" / "background-night.png")
+LARGURA, ALTURA = bg.get_size()
+screen = pygame.display.set_mode((LARGURA, ALTURA))
+bg = bg.convert()
 pygame.display.set_caption('Flappy Bird')
 clock = pygame.time.Clock()
+
+pipe_cano_baixo = pygame.image.load(DIRETORIO_BASE / "assets" / "pipe-red.png").convert_alpha()
+pipe_cano_cima = pygame.transform.flip(pipe_cano_baixo, False, True)
+LARGURA_PIPE_CANO, ALTURA_PIPE_CANO = pipe_cano_baixo.get_size()
+
+
 tile_size_joguinho = 64
 tileset = pygame.image.load(DIRETORIO_BASE / "tileset.png")
-bg = pygame.image.load(DIRETORIO_BASE / "bg.jpg")
 player_spritesheet = pygame.image.load(DIRETORIO_BASE / "meppo32.png").convert_alpha()
 fonte = pygame.font.SysFont("Arial", 20) # ou pygame.font.Font(None, 24)
 texto_colisao = ""
@@ -18,7 +28,7 @@ player_curr_frame = 0
 
 
 
-pos_x = 128
+pos_x = 48
 pos_y = 0
 vel_y = 0
 gravidade = 0.001
@@ -27,46 +37,43 @@ mapa_x = 0
 vel_mapa = 0.2
 
 mapa_joguinho = [
-  "BXXXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXB",
-  "BXXXXXXBXXXXCXXXXBXXXXBXXXXXXXXXBXXXXBXXXXBXXXXCXXXXBXXXXXXXXXBXXXXCXXXXBXXXXBXXXXBXXXXB",
-  "BXXXXXXBXXXXXXXXXBXXXXCXXXXXXXXXBXXXXBXXXXCXXXXXXXXXBXXXXXXXXXBXXXXXXXXXBXXXXCXXXXBXXXXB",
-  "BXXXXXXCXXXXXXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXXXXXBXXXXCXXXXCXXXXXXXXXBXXXXXXXXXCXXXXXB",
-  "BXXXXXXXXXXXCXXXXCXXXXXXXXXBXXXXXXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXCXXXXBXXXXXXXXXXXXXXB",
-  "BXXXXXXXXXXXBXXXXXXXXXCXXXXBXXXXXXXXXCXXXXCXXXXBXXXXXXXXXBXXXXXXXXXBXXXXCXXXXCXXXXXXXXXB",
-  "BXXXXXXCXXXXBXXXXXXXXXBXXXXBXXXXCXXXXXXXXXBXXXXBXXXXXXXXXBXXXXCXXXXBXXXXXXXXXBXXXXCXXXXB",
-  "BXXXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXXXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXXXXXXBXXXXBXXXXB",
-  "BGGGGXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXCXXXXBXXXXBGGGGB",
-  "BXXXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXBXXXXB",
-]
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXUXXXXXXXXXXXXXXXXXXXXXXXXXXUXXXXXXXXXXXXXXXXXUXXXXXXXXXXXXXXUXXXXXXXXXXXXXX",  # linha 0 (y = 0)
+        "XXXXXXUXXXXXXXUXXXXXXXXXUXXXXXUXXXXXXXXUXXXXXUXXXXXXXXXXXUXXUXXXXXXXXXXXXXXXXXXXXUXXXXXXXXXXXXXXUXXXXX",  # linha 1 (y = 64)
+        "XXXXXXXXXXUXXXXXXXXXXUXXXXXXXXXXXUXXXXXXXXXXXXXXXXXUXXXXXXXXXXXXXXXXXUXXXXXUXXXXXXXXXXXXXXUXXXXXXXXXXX",  # linha 2 (y = 128)
+        "XXXXXXXXXXXXXXXXXXUXXXXXXXXDXXXXXXXXUXXXXXUXXXXXXXXXXXDXXXXXXXXUXXXXXXXXDXXXXXXXXXXXUXXDXXXXXUXXXXXXXX",  # linha 3 (y = 192)
+        "XXXXXXDXXXXXXXDXXXXXXXXXDXXXXXDXXXXXXXXDXXXXXDXXUXXXXXXXXDXXDXXXXXUXXXXXXXXXXXUXXDXXXXXXXXXXXXXXDXXXXX",  # linha 4 (y = 256)
+        "XXXXXXXXXXDXXXXXXXXXXDXXXXXXXXXXXDXXXXXXXXXXXXXXXXXDXXXXXXXXXXXXXXXXXDXXXXXDXXXXXXXXXXXXXXDXXXXXXXXXXX",  # linha 5 (y = 320)
+        "XXXXXXXXXXXXXXXXXXDXXXXXXXXXXXXXXXXXDXXXXXDXXXXXXXXXXXXXXXXXXXXDXXXXXXXXXXXXXXXXXXXXDXXXXXXXXDXXXXXXXX",  # linha 6 (y = 384)
+        "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXDXXXXXXXXXXXXXXXXXDXXXXXXXXXXXDXXXXXXXXXXXXXXXXXXXXXXX",  # linha 7 (y = 448)
+    ]
+
 
 tiles_mapa = {
-    #JUSTIFICATIVA TECNICA: MAPEIA A COORDENADA DE CADA TILE PARA EVITAR IFS NO SCREEN.BLIT()
-    # -- LINHA 1 TILE SET ---
-    "D": (0, 0, tile_size_joguinho, tile_size_joguinho), #CHÃO ENFERRUJADO FAIXA ZEBRADA
-    "U": (64, 0, tile_size_joguinho, tile_size_joguinho),#CHÃO ENFERRUJADO
-    "P": (128, 0, tile_size_joguinho, tile_size_joguinho),#AGUA PARTE CIMA
-    
-    # -- LINHA 2 TILE SET ---
-    "G": (0, 64, tile_size_joguinho, tile_size_joguinho), #CAIXA DE METAL LED AZUL
-    "T": (64, 64, tile_size_joguinho, tile_size_joguinho), #CAIXA DE METAL
-    "Z": (128, 64, tile_size_joguinho, tile_size_joguinho), #AGUA PARTE BAIXO
-    
-    # -- LINHA 3 TILE SET ---
-    "B": (0, 128, tile_size_joguinho, tile_size_joguinho),  #CAIXA DE METAL
-    "C": (64, 128, tile_size_joguinho, tile_size_joguinho), #CAIXA DE METAL FAIXA ZEBRADA
-
+    "D": (0, 0, tile_size_joguinho, tile_size_joguinho), 
+    "U": (64, 0, tile_size_joguinho, tile_size_joguinho),
 }
 
-colisores = ["G","B", "C", "D"] #Lista de blocos que colidem com o jogador.
-colliders_mapa = [] 
-#JUSTIFICATIVA TECNICA: A ideia é ter um array de blocos colisores para utilizar colliderlist. Dado uma lista de colisores, retorna o objeto rect que o jogador colidiu. Muito mais eficiente!!!
+obstaculos = []      
+colliders_mapa = []
+
 
 for i in range(len(mapa_joguinho)):
     for j in range(len(mapa_joguinho[i])):
-        if mapa_joguinho[i][j] in colisores:
-            collider_rect = pygame.Rect(j * tile_size_joguinho, i * tile_size_joguinho, 64, 64) #Cria o colisor
-            colliders_mapa.append(collider_rect)
-    print(colliders_mapa)
+        letra = mapa_joguinho[i][j]
+        x_mundo = j * tile_size_joguinho
+
+        if letra == "D":  # Cano de baixo
+            y_mundo = i * tile_size_joguinho
+            rect = pygame.Rect(x_mundo, y_mundo, LARGURA_PIPE_CANO, ALTURA_PIPE_CANO)
+            obstaculos.append((pipe_cano_baixo, rect))
+            colliders_mapa.append(rect)
+
+        elif letra == "U":  # Cano de cima
+            y_boca = (i + 1) * tile_size_joguinho
+            y_mundo = y_boca - ALTURA_PIPE_CANO
+            rect = pygame.Rect(x_mundo, y_mundo, LARGURA_PIPE_CANO, ALTURA_PIPE_CANO)
+            obstaculos.append((pipe_cano_cima, rect))
+            colliders_mapa.append(rect)
 
 while True:
     for event in pygame.event.get():
@@ -92,15 +99,6 @@ while True:
     # ==================================
    
     
-    
-    # collider_jogador = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
-    # if collider_jogador.collidelist(colliders_mapa) != -1:
-    #     idx = collider_jogador.collidelist(colliders_mapa)
-    #     if idx != -1:
-    #         texto_colisao = str(colliders_mapa[idx])
-    #     else:
-    #         texto_colisao = ""
-    
     collider_jogador_x = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
     idx_x = collider_jogador_x.collidelist(colliders_mapa)
     if idx_x != -1:
@@ -111,11 +109,12 @@ while True:
     pos_y += vel_y * delta_time #posicao y sempre em relação a velocidade.
 
     collider_y = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
-    idx_y = collider_y.collidelist(colliders_mapa)
-    if idx_y != -1:
-        pos_y = old_pos_y # trava o jogador para não atravessar o chão/teto
+    indice_colisor = collider_y.collidelist(colliders_mapa)
+    if indice_colisor != -1:
+        pos_y = old_pos_y 
         vel_y = 0
-        texto_colisao = str(colliders_mapa[idx_y])
+        texto_colisao = str(colliders_mapa[indice_colisor])
+        
     # ==================================
     #         ANIMAÇÃO PLAYER
     # ==================================
@@ -135,8 +134,6 @@ while True:
     #             DESENHOS
     # ==================================
     screen.blit(bg, (0, 0))
-    # pygame.draw.rect(screen, (255, 0, 0), (pos_x, pos_y, 64, 64)) #Personagem
-    # pygame.draw.rect(screen, (0, 0, 255), collider_jogador, 2) # Visualização do collider
 
     area_player = (player_curr_frame * 64, linha_sprite * 64, 64, 64)
     frame_atual = player_spritesheet.subsurface(area_player)
@@ -145,16 +142,9 @@ while True:
     screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player 
     
     
-    for i in range(len(mapa_joguinho)): #Desenho do mapa
-        for j in range(len(mapa_joguinho[i])):
-            letra = mapa_joguinho[i][j]
-            if letra in tiles_mapa:
-                tile_coordenada = tiles_mapa[mapa_joguinho[i][j]]
-                screen.blit(tileset, (j*tile_size_joguinho + mapa_x, i*tile_size_joguinho), tile_coordenada)
+    for img_pipe, rect in obstaculos: #Desenho dos canos
+        screen.blit(img_pipe, (rect.x + mapa_x, rect.y))
     pygame.draw.rect(screen, "yellow", (pos_x, pos_y, 64, 64), 2)
-    if texto_colisao:
-        superficie_texto = fonte.render(texto_colisao, True, (255, 255, 255), (0, 0, 0))
-        screen.blit(superficie_texto, (10, 10))
 
     
 
