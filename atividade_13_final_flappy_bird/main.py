@@ -11,6 +11,8 @@ tile_size_joguinho = 64
 tileset = pygame.image.load(DIRETORIO_BASE / "tileset.png")
 bg = pygame.image.load(DIRETORIO_BASE / "bg.jpg")
 player_spritesheet = pygame.image.load(DIRETORIO_BASE / "meppo32.png").convert_alpha()
+fonte = pygame.font.SysFont("Arial", 20) # ou pygame.font.Font(None, 24)
+texto_colisao = ""
 player_anim_time = 0
 player_curr_frame = 0
 
@@ -63,8 +65,7 @@ for i in range(len(mapa_joguinho)):
     for j in range(len(mapa_joguinho[i])):
         if mapa_joguinho[i][j] in colisores:
             collider_rect = pygame.Rect(j * tile_size_joguinho, i * tile_size_joguinho, 64, 64) #Cria o colisor
-            if collider_rect not in colliders_mapa: #Evita colisor duplicado
-                colliders_mapa.append(collider_rect)
+            colliders_mapa.append(collider_rect)
     print(colliders_mapa)
 
 while True:
@@ -82,26 +83,39 @@ while True:
 
     clock.tick(60)
     delta_time = clock.get_time()
+    old_mapa_x = mapa_x
+    mapa_x = mapa_x - vel_mapa * delta_time #mapa andando
 
 
     # ==================================
-    #       MOVIMENTAÇÃO EIXO X
+    #       MOVIMENTAÇÃO EIXOS E COLISÕES
     # ==================================
-    old_pos_x = pos_x
+   
+    
+    
+    # collider_jogador = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
+    # if collider_jogador.collidelist(colliders_mapa) != -1:
+    #     idx = collider_jogador.collidelist(colliders_mapa)
+    #     if idx != -1:
+    #         texto_colisao = str(colliders_mapa[idx])
+    #     else:
+    #         texto_colisao = ""
+    
+    collider_jogador_x = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
+    idx_x = collider_jogador_x.collidelist(colliders_mapa)
+    if idx_x != -1:
+        mapa_x = old_mapa_x
 
-    collider_jogador_x = pygame.Rect(pos_x, pos_y, 64, 64)
-    if collider_jogador_x.collidelist(colliders_mapa) != -1:
-        pos_x = old_pos_x
-
-    # ==================================
-    #       MOVIMENTAÇÃO EIXO Y + GRAVIDADE
-    # ==================================
     old_pos_y = pos_y
-
     vel_y = vel_y + gravidade * delta_time #Acelerando a cada loop (valores positivos descem no eixo y)
     pos_y += vel_y * delta_time #posicao y sempre em relação a velocidade.
 
-
+    collider_y = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
+    idx_y = collider_y.collidelist(colliders_mapa)
+    if idx_y != -1:
+        pos_y = old_pos_y # trava o jogador para não atravessar o chão/teto
+        vel_y = 0
+        texto_colisao = str(colliders_mapa[idx_y])
     # ==================================
     #         ANIMAÇÃO PLAYER
     # ==================================
@@ -117,13 +131,6 @@ while True:
         player_curr_frame = (player_curr_frame + 1) % total_frames
         player_anim_time = 0
 
-    collider_jogador_y = pygame.Rect(pos_x, pos_y, 64, 64)
-    if collider_jogador_y.collidelist(colliders_mapa) != -1:
-           pos_y = old_pos_y
-           vel_y = 0
-           no_chao = True
-    
-
     # ==================================
     #             DESENHOS
     # ==================================
@@ -135,17 +142,19 @@ while True:
     frame_atual = player_spritesheet.subsurface(area_player)
 
 
-    screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player
+    screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player 
     
-    mapa_x = mapa_x - vel_mapa * delta_time #mapa andando
+    
     for i in range(len(mapa_joguinho)): #Desenho do mapa
         for j in range(len(mapa_joguinho[i])):
             letra = mapa_joguinho[i][j]
             if letra in tiles_mapa:
                 tile_coordenada = tiles_mapa[mapa_joguinho[i][j]]
                 screen.blit(tileset, (j*tile_size_joguinho + mapa_x, i*tile_size_joguinho), tile_coordenada)
-    pygame.draw.rect(screen, "red", collider_jogador_x, 2)
-    pygame.draw.rect(screen, "yellow", collider_jogador_y, 2)
+    pygame.draw.rect(screen, "yellow", (pos_x, pos_y, 64, 64), 2)
+    if texto_colisao:
+        superficie_texto = fonte.render(texto_colisao, True, (255, 255, 255), (0, 0, 0))
+        screen.blit(superficie_texto, (10, 10))
 
     
 
