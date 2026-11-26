@@ -19,14 +19,17 @@ LARGURA_PIPE_CANO, ALTURA_PIPE_CANO = pipe_cano_baixo.get_size()
 
 
 tile_size_joguinho = 64
-tileset = pygame.image.load(DIRETORIO_BASE / "tileset.png")
 player_spritesheet = pygame.image.load(DIRETORIO_BASE / "meppo32.png").convert_alpha()
-fonte = pygame.font.SysFont("Arial", 20) # ou pygame.font.Font(None, 24)
+fonte = pygame.font.SysFont("Arial", 20)
 texto_colisao = ""
 player_anim_time = 0
 player_curr_frame = 0
 
-
+yellowbird_downflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" / "yellowbird-downflap.png").convert_alpha()
+yellowbird_midflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" / "yellowbird-midflap.png").convert_alpha()
+yellowbird_upflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" / "yellowbird-upflap.png").convert_alpha()
+yellowbird_frames = [yellowbird_downflap, yellowbird_midflap, yellowbird_upflap]
+LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD = yellowbird_frames[0].get_size()
 
 pos_x = 48
 pos_y = 0
@@ -99,7 +102,7 @@ while True:
     # ==================================
    
     
-    collider_jogador_x = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
+    collider_jogador_x = pygame.Rect(pos_x - mapa_x, pos_y, LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD)
     idx_x = collider_jogador_x.collidelist(colliders_mapa)
     if idx_x != -1:
         mapa_x = old_mapa_x
@@ -108,8 +111,8 @@ while True:
     vel_y = vel_y + gravidade * delta_time #Acelerando a cada loop (valores positivos descem no eixo y)
     pos_y += vel_y * delta_time #posicao y sempre em relação a velocidade.
 
-    collider_y = pygame.Rect(pos_x - mapa_x, pos_y, 64, 64)
-    indice_colisor = collider_y.collidelist(colliders_mapa)
+    collider_jogador_y = pygame.Rect(pos_x - mapa_x, pos_y, LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD)
+    indice_colisor = collider_jogador_y.collidelist(colliders_mapa)
     if indice_colisor != -1:
         pos_y = old_pos_y 
         vel_y = 0
@@ -119,14 +122,13 @@ while True:
     #         ANIMAÇÃO PLAYER
     # ==================================
         
-    total_frames = 8
-    linha_sprite = 1
+    total_frames = len(yellowbird_frames)
 
 
     player_curr_frame = player_curr_frame % total_frames
 
     player_anim_time = player_anim_time + delta_time
-    if player_anim_time / 1000 > 0.15:
+    if player_anim_time / 1000 > 0.1:
         player_curr_frame = (player_curr_frame + 1) % total_frames
         player_anim_time = 0
 
@@ -135,8 +137,7 @@ while True:
     # ==================================
     screen.blit(bg, (0, 0))
 
-    area_player = (player_curr_frame * 64, linha_sprite * 64, 64, 64)
-    frame_atual = player_spritesheet.subsurface(area_player)
+    frame_atual = yellowbird_frames[player_curr_frame]
 
 
     screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player 
@@ -144,7 +145,7 @@ while True:
     
     for img_pipe, rect in obstaculos: #Desenho dos canos
         screen.blit(img_pipe, (rect.x + mapa_x, rect.y))
-    pygame.draw.rect(screen, "yellow", (pos_x, pos_y, 64, 64), 2)
+    pygame.draw.rect(screen, "yellow", (pos_x, pos_y, LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD), 2)
 
     
 
