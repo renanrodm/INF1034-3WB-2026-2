@@ -4,31 +4,41 @@ from pathlib import Path
 DIRETORIO_BASE = Path(__file__).parent
 
 pygame.init()
-
-
-bg = pygame.image.load(DIRETORIO_BASE / "assets" / "background-night.png")
-LARGURA, ALTURA = bg.get_size()
-screen = pygame.display.set_mode((LARGURA, ALTURA))
-bg = bg.convert()
 pygame.display.set_caption('Flappy Bird')
 clock = pygame.time.Clock()
 
+bg = pygame.image.load(DIRETORIO_BASE / "assets" / "background-night.png")
+LARGURA_BACKGROUND, ALTURA_BACKGROUND = bg.get_size()
+
+screen = pygame.display.set_mode((LARGURA_BACKGROUND, ALTURA_BACKGROUND))
+bg = bg.convert()
+
 pipe_cano_baixo = pygame.image.load(DIRETORIO_BASE / "assets" / "pipe-red.png").convert_alpha()
 pipe_cano_cima = pygame.transform.flip(pipe_cano_baixo, False, True)
+yellowbird_downflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" /
+"yellowbird-downflap.png").convert_alpha()
+yellowbird_midflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" /
+"yellowbird-midflap.png").convert_alpha()
+yellowbird_upflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" /
+"yellowbird-upflap.png").convert_alpha()
+chao = pygame.image.load(DIRETORIO_BASE / "assets" / "base.png").convert()
+
+
 LARGURA_PIPE_CANO, ALTURA_PIPE_CANO = pipe_cano_baixo.get_size()
 
-
-tile_size_joguinho = 64
-fonte = pygame.font.SysFont("Arial", 20)
-texto_colisao = ""
-player_anim_time = 0
-player_curr_frame = 0
-
-yellowbird_downflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" / "yellowbird-downflap.png").convert_alpha()
-yellowbird_midflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" / "yellowbird-midflap.png").convert_alpha()
-yellowbird_upflap = pygame.image.load(DIRETORIO_BASE / "assets" / "player" / "yellowbird-upflap.png").convert_alpha()
 yellowbird_frames = [yellowbird_downflap, yellowbird_midflap, yellowbird_upflap]
 LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD = yellowbird_frames[0].get_size()
+
+
+LARGURA_CHAO, ALTURA_CHAO = chao.get_size()
+CHAO_Y = ALTURA_BACKGROUND - 30
+
+screen = pygame.display.set_mode((LARGURA_BACKGROUND, ALTURA_BACKGROUND))
+
+tile_size_joguinho = 64
+
+yellowbird_anim_time = 0
+yellowbird_curr_frame = 0
 
 pos_x = 48
 pos_y = 0
@@ -110,6 +120,10 @@ while True:
     vel_y = vel_y + gravidade * delta_time #Acelerando a cada loop (valores positivos descem no eixo y)
     pos_y += vel_y * delta_time #posicao y sempre em relação a velocidade.
 
+    if pos_y + ALTURA_YELLOWBIRD > CHAO_Y:
+        pos_y = CHAO_Y - ALTURA_YELLOWBIRD
+        vel_y = 0
+
     collider_jogador_y = pygame.Rect(pos_x - mapa_x, pos_y, LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD)
     indice_colisor = collider_jogador_y.collidelist(colliders_mapa)
     if indice_colisor != -1:
@@ -124,27 +138,35 @@ while True:
     total_frames = len(yellowbird_frames)
 
 
-    player_curr_frame = player_curr_frame % total_frames
+    yellowbird_curr_frame = yellowbird_curr_frame % total_frames
 
-    player_anim_time = player_anim_time + delta_time
-    if player_anim_time / 1000 > 0.1:
-        player_curr_frame = (player_curr_frame + 1) % total_frames
-        player_anim_time = 0
+    yellowbird_anim_time = yellowbird_anim_time + delta_time
+    if yellowbird_anim_time / 1000 > 0.1:
+        yellowbird_curr_frame = (yellowbird_curr_frame + 1) % total_frames
+        yellowbird_anim_time = 0
 
     # ==================================
     #             DESENHOS
     # ==================================
     screen.blit(bg, (0, 0))
 
-    frame_atual = yellowbird_frames[player_curr_frame]
 
-
-    screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player 
     
-    
+    #           DESENHO DOS CANOS
     for img_pipe, rect in obstaculos: #Desenho dos canos
         screen.blit(img_pipe, (rect.x + mapa_x, rect.y))
-    pygame.draw.rect(screen, "yellow", (pos_x, pos_y, LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD), 2)
+
+    #           DESENHO DO CHÃO
+    GAP_CHAO_BACKGROUND = LARGURA_CHAO - LARGURA_BACKGROUND
+    chao_x = -((-mapa_x) % GAP_CHAO_BACKGROUND)
+    screen.blit(chao, (chao_x, CHAO_Y))
+
+    #           DESENHO DO YELLOWBIRD
+    frame_atual = yellowbird_frames[yellowbird_curr_frame]
+    screen.blit(frame_atual, (pos_x, pos_y)) #Desenha o player 
+    pygame.draw.rect(screen, "yellow", (pos_x, pos_y, LARGURA_YELLOWBIRD, ALTURA_YELLOWBIRD), 2) #hitbox player
+
+    
 
     
 
