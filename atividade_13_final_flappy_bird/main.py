@@ -19,7 +19,6 @@ LARGURA_PIPE_CANO, ALTURA_PIPE_CANO = pipe_cano_baixo.get_size()
 
 
 tile_size_joguinho = 64
-player_spritesheet = pygame.image.load(DIRETORIO_BASE / "meppo32.png").convert_alpha()
 fonte = pygame.font.SysFont("Arial", 20)
 texto_colisao = ""
 player_anim_time = 0
